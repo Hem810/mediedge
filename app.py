@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
     kb.load()
     print(f"[MediEdge] Knowledge base loaded - {len(kb._entries)} IMCI entries, {len(kb._drugs)} drugs")
 
-    print(f"[MediEdge] Server ready at http://{settings.HOST}:{settings.PORT}")
+    print(f"[MediEdge] Server ready at http://localhost:{settings.PORT}")
     print(f"[MediEdge] Ollama host: {settings.OLLAMA_HOST}")
     print(f"[MediEdge] Model: {settings.OLLAMA_MODEL}")
 
