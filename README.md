@@ -15,25 +15,26 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Ollama](https://img.shields.io/badge/Ollama-Gemma_4-000000?style=flat-square)](https://ollama.com)
 
-🎬 **[Watch the 3-minute demo](#)** &nbsp;·&nbsp; 📄 **[Read the writeup](docs/KAGGLE_WRITEUP.md)** &nbsp;·&nbsp; 🏗️ **[Architecture](docs/ARCHITECTURE.md)** &nbsp;·&nbsp; 🚀 **[Deploy](docs/DEPLOY.md)**
+🎬 **[Watch the 3-minute demo](https://youtu.be/BhsvpntCbnE)** &nbsp;·&nbsp; 📄 **[Read the writeup](docs/KAGGLE_WRITEUP.md)** &nbsp;·&nbsp; 🏗️ **[Architecture](docs/ARCHITECTURE.md)** &nbsp;·&nbsp;
 
 </div>
 
 ---
 
-## The 10:30 PM problem
+## The 10:30 PM Problem
 
-It's ten-thirty at night, in a village in Rajasthan. A two-year-old girl named Pari has had fever for three days. The only person who can help is an ASHA worker — she has a Class 12 education, three months of training, and a paper booklet from 2018. The nearest doctor is fourteen kilometres away. The cell tower has been out since the morning rain.
+It is 10:30 PM in Bissau, a village in Jhunjhunu district, Rajasthan. A one year old boy named Rahul has had a fever for three days. His mother walks 400 metres to the small concrete house where Sushma , the village's ASHA (Accredited Social Health Activist) worker, lives.
 
-She has to decide, by herself, in the next thirty seconds, whether Pari needs to travel that distance tonight.
+She has a Class 12 education, three months of community health training, and a paper booklet from 2018. She has no doctor on call. The nearest Community Health Centre is 14.5 km away. The cell tower three villages over has been out since the morning rain.
 
-This decision plays out **roughly thirteen million times every week** across rural India. Get it wrong by under-referring and a child dies of pneumonia. Get it wrong by over-referring and a daily-wage family loses an entire week's income.
+She has to decide, by herself, in the next thirty seconds, whether Rahul needs to travel that 14.5 km tonight.
 
-There are nine hundred thousand ASHA workers like her. None of them have AI in their hands.
+This decision plays out **roughly 13 million times every week** across rural India. Get it wrong by under referring and a child dies of pneumonia. Get it wrong by over referring and a daily wage family loses an entire week's income.
 
 **Until now.**
 
 ---
+
 
 ## What it does
 
@@ -44,7 +45,7 @@ MediEdge is a web-based clinical decision support assistant. The ASHA worker ope
 3. **Vitals + optional clinical photo** — abnormal values flag in red automatically
 4. **Gemma 4 analyses** — retrieves relevant WHO IMCI protocols via BM25, calls local Ollama, returns structured JSON
 
-In **6–10 seconds**, she sees:
+In **60–70 seconds**, she sees:
 
 - Ranked **differential diagnosis** with confidence scores, ICD-10 codes, supporting and against findings, mapped to WHO IMCI categories
 - **Medications** drawn exclusively from the NHM India Essential Medicines list, with weight-based paediatric dosing in **both Hindi and English**
@@ -60,8 +61,6 @@ Every Hindi line in the interface has English directly underneath. The same is t
 ### Prerequisites
 
 - Python 3.11 or later
-- ~8 GB RAM minimum (for `gemma4:e4b`), 32 GB for `gemma4:31b`
-- A laptop, tablet, or any computer
 
 ### Step 1 — Install Ollama
 
@@ -75,9 +74,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 ### Step 2 — Pull a Gemma 4 model
 
 ```bash
-ollama pull gemma4:e4b      # 4B params, runs on 8 GB RAM (recommended)
-# or for production-grade reasoning:
-# ollama pull gemma4:31b    # 31B params, needs 32 GB RAM
+ollama pull gemma4:e4b
 ```
 
 ### Step 3 — Run MediEdge
@@ -279,7 +276,7 @@ The WHO IMCI protocols are public-domain WHO publications. The NHM Essential Med
 
 <div align="center">
 
-### *Pari is fictional. The problem isn't.*
+### *The characters are fictional. The problem isn't.*
 
 **MediEdge — frontier AI for the last health mile.**
 
