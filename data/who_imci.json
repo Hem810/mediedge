@@ -1,0 +1,125 @@
+{
+  "version": "WHO IMCI 2023",
+  "entries": [
+    {
+      "subcategory": "Fever",
+      "title": "Malaria assessment - child 2 months to 5 years",
+      "summary": "Assess for malaria in any child with fever. Check for stiff neck, generalised rash, runny nose, measles signs.",
+      "full_text": "CLASSIFY MALARIA: If child lives in malaria risk area or has travelled there: classify as SEVERE FEBRILE DISEASE if any general danger sign or stiff neck. Classify as MALARIA if fever. Give pre-referral treatment if severe. Do malaria RDT if available.",
+      "age_min_months": 2,
+      "age_max_months": 59,
+      "keywords": ["fever", "malaria", "rdt", "antimalarial", "stiff neck", "danger signs"],
+      "icd_codes": ["B50", "B51", "B54"]
+    },
+    {
+      "subcategory": "Pneumonia",
+      "title": "Cough and difficult breathing - child 2 months to 5 years",
+      "summary": "Count breaths for 1 full minute. Fast breathing: >=50 bpm (2-11 months), >=40 bpm (12-59 months). Check for chest indrawing and stridor.",
+      "full_text": "ASSESS: Count breaths for 60 seconds. Check for chest indrawing. Check for stridor when child is calm. CLASSIFY: SEVERE PNEUMONIA if chest indrawing or stridor when calm or any general danger sign - refer urgently and give first dose amoxicillin. PNEUMONIA if fast breathing without chest indrawing - give 5-day amoxicillin. NO PNEUMONIA if no fast breathing.",
+      "age_min_months": 2,
+      "age_max_months": 59,
+      "keywords": ["cough", "breathing", "pneumonia", "chest indrawing", "stridor", "amoxicillin"],
+      "icd_codes": ["J18", "J06", "J22"]
+    },
+    {
+      "subcategory": "Diarrhoea",
+      "title": "Diarrhoea and dehydration - child 2 months to 5 years",
+      "summary": "Look for dehydration: sunken eyes, skin pinch, restlessness, drinking poorly. Check for blood in stool. Assess duration.",
+      "full_text": "DEHYDRATION: SEVERE if two of: abnormal sleeping/unconscious, sunken eyes, not able to drink, skin pinch goes back very slowly. SOME DEHYDRATION if two of: restless/irritable, sunken eyes, drinks eagerly, skin pinch goes back slowly. DYSENTERY if blood in stool. PERSISTENT DIARRHOEA if 14+ days. Give zinc 10mg (2-6 months) or 20mg (>6 months) for 14 days.",
+      "age_min_months": 2,
+      "age_max_months": 59,
+      "keywords": ["diarrhoea", "dehydration", "ORS", "zinc", "blood stool", "dysentery"],
+      "icd_codes": ["A09", "K52", "A06"]
+    },
+    {
+      "subcategory": "Malnutrition",
+      "title": "Nutritional status assessment - MUAC and oedema",
+      "summary": "Measure MUAC: <11.5cm = SAM, 11.5-12.5cm = MAM. Check for bilateral pitting oedema.",
+      "full_text": "Look for visible severe wasting. Check for oedema of both feet. Measure MUAC if child 6-59 months. SEVERE ACUTE MALNUTRITION if MUAC <11.5cm or bilateral pitting oedema. MODERATE ACUTE MALNUTRITION if MUAC 11.5-12.5cm. SAM with complications - refer. SAM without complications - RUTF, treat infections, follow-up weekly.",
+      "age_min_months": 6,
+      "age_max_months": 59,
+      "keywords": ["malnutrition", "MUAC", "wasting", "oedema", "SAM", "MAM", "RUTF"],
+      "icd_codes": ["E40", "E41", "E43", "E44", "E46"]
+    },
+    {
+      "subcategory": "Young infant",
+      "title": "Young infant - possible serious bacterial infection",
+      "summary": "Check for: convulsions, fast breathing (>=60 bpm), severe chest indrawing, nasal flaring, bulging fontanelle, fever or hypothermia, many/severe skin pustules, umbilical redness/discharge, cyanosis.",
+      "full_text": "ASSESS YOUNG INFANT (0-2 months): Count breaths 60 seconds - fast if >=60/min. Check for severe chest indrawing, grunting, nasal flaring. Feel fontanelle. Check temperature - fever >=37.5C or hypothermia <35.5C. Look at umbilicus. Count pustules. Check for jaundice. POSSIBLE SERIOUS BACTERIAL INFECTION - Refer URGENTLY and give first dose ampicillin + gentamicin.",
+      "age_min_months": 0,
+      "age_max_months": 2,
+      "keywords": ["newborn", "neonatal", "infant", "bacterial infection", "fast breathing", "convulsion", "umbilicus"],
+      "icd_codes": ["P36", "P22", "P28", "A41"]
+    },
+    {
+      "subcategory": "Danger signs",
+      "title": "General danger signs - all sick children",
+      "summary": "Check for: not able to drink/breastfeed, vomits everything, convulsions, lethargic/unconscious. ANY danger sign = refer urgently.",
+      "full_text": "Ask: Is the child able to drink or breastfeed? Does the child vomit everything? Has the child had convulsions? Look: is the child lethargic or unconscious? ANY DANGER SIGN present = child needs urgent assessment and referral. Give pre-referral treatments: appropriate antibiotic, artesunate if malaria, diazepam if convulsing.",
+      "age_min_months": 2,
+      "age_max_months": 59,
+      "keywords": ["danger signs", "unconscious", "convulsions", "vomiting", "referral"],
+      "icd_codes": ["R55", "R56", "R11"]
+    },
+    {
+      "subcategory": "Ear",
+      "title": "Ear infection assessment",
+      "summary": "Ask about ear pain or discharge. Check for tender mastoid swelling and pus draining from ear.",
+      "full_text": "MASTOIDITIS if tender swelling behind ear - refer urgently and give first dose amoxicillin. ACUTE EAR INFECTION if pus draining <14 days or ear pain - give 5-day amoxicillin, dry the ear by wicking. CHRONIC EAR INFECTION if pus draining 14+ days.",
+      "age_min_months": 2,
+      "age_max_months": 59,
+      "keywords": ["ear", "ear infection", "mastoiditis", "otitis", "discharge"],
+      "icd_codes": ["H66", "H70", "H65"]
+    },
+    {
+      "subcategory": "Anaemia",
+      "title": "Anaemia and malaria - pallor assessment",
+      "summary": "Look for palmar pallor. Severe pallor = severe anaemia. Some pallor = anaemia.",
+      "full_text": "Look for palmar pallor - hold child's hand open. SEVERE PALMAR PALLOR = severe anaemia: refer urgently. ANAEMIA: give iron for 14 days, anti-malarials if indicated, follow up in 14 days.",
+      "age_min_months": 2,
+      "age_max_months": 59,
+      "keywords": ["anaemia", "pallor", "iron deficiency", "palmar"],
+      "icd_codes": ["D50", "D64"]
+    },
+    {
+      "subcategory": "Immunisation",
+      "title": "Immunisation status - India National Immunization Schedule",
+      "summary": "BCG at birth, OPV 0 at birth, DPT+OPV+Hib+HepB at 6/10/14 weeks, MR at 9 months, DPT booster at 16-24 months.",
+      "full_text": "India NIS schedule: Birth: BCG, OPV 0, HepB 0. 6 weeks: DPT-1, OPV-1, IPV-1, HepB-1, Hib-1, Rota-1, PCV-1. 10 weeks: DPT-2, OPV-2, HepB-2, Hib-2, Rota-2. 14 weeks: DPT-3, OPV-3, IPV-2, HepB-3, Hib-3, PCV-2. 9 months: MR-1, JE-1, VitA-1, OPV booster. 16-24 months: DPT booster, OPV booster, MR-2, JE-2, VitA-2.",
+      "age_min_months": 0,
+      "age_max_months": 24,
+      "keywords": ["immunisation", "vaccination", "BCG", "DPT", "OPV", "measles"],
+      "icd_codes": ["Z23", "Z27"]
+    },
+    {
+      "subcategory": "Fever",
+      "title": "Dengue fever assessment",
+      "summary": "Suspect dengue if fever 2-7 days with severe headache, retro-orbital pain, myalgia, rash. Look for warning signs.",
+      "full_text": "WARNING SIGNS requiring hospital: abdominal pain, persistent vomiting, mucosal bleeding, lethargy, liver enlargement >2cm. SEVERE DENGUE: shock, severe bleeding - refer immediately. DENGUE without warning signs: oral fluids, paracetamol only (NO aspirin/ibuprofen).",
+      "age_min_months": 2,
+      "age_max_months": 180,
+      "keywords": ["dengue", "fever", "rash", "headache", "bleeding", "platelet"],
+      "icd_codes": ["A90", "A91"]
+    },
+    {
+      "subcategory": "Skin",
+      "title": "Skin conditions - impetigo, scabies, fungal",
+      "summary": "Impetigo: honey-coloured crusts - amoxicillin 5 days. Scabies: itchy rash between fingers - permethrin 5%. Fungal: ring-shaped patches - clotrimazole.",
+      "full_text": "IMPETIGO: oral amoxicillin 5 days, clean with soap and water, apply betadine. SCABIES: treat entire family, apply permethrin 5% from neck down, leave 8 hours, repeat in 1 week. TINEA: clotrimazole 1% twice daily for 2-4 weeks. ECZEMA: emollient, avoid irritants.",
+      "age_min_months": 0,
+      "age_max_months": 600,
+      "keywords": ["skin", "impetigo", "scabies", "fungal", "rash", "itchy", "ringworm"],
+      "icd_codes": ["L01", "B86", "B35", "L20"]
+    },
+    {
+      "subcategory": "Wound",
+      "title": "Wound assessment and management",
+      "summary": "Assess wound depth, contamination, signs of infection. Tetanus status critical.",
+      "full_text": "INFECTION SIGNS: Redness extending from wound, warmth, swelling, pus discharge, foul smell, fever, red streaks. Clean with saline. Apply antiseptic. Cover with clean dressing. TETANUS: Check immunisation status. If wound dirty and tetanus status incomplete - give tetanus toxoid and refer for anti-tetanus serum.",
+      "age_min_months": 0,
+      "age_max_months": 1200,
+      "keywords": ["wound", "infection", "tetanus", "laceration", "pus", "redness"],
+      "icd_codes": ["T14", "T79", "A33", "L03"]
+    }
+  ]
+}

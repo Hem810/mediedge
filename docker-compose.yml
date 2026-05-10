@@ -1,0 +1,49 @@
+version: "3.9"
+
+# Two services: the MediEdge web app, and a local Ollama server.
+# This gives you the full stack with one command:  docker compose up
+#
+# First-time setup (one-time, ~5 min):
+#   docker compose up -d ollama
+#   docker compose exec ollama ollama pull gemma4:e4b
+#   docker compose up
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: mediedge-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mediedge:
+    build: .
+    container_name: mediedge
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    ports:
+      - "8000:8000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-gemma4:e4b}
+      - WHISPER_MODEL=${WHISPER_MODEL:-small}
+    volumes:
+      - ./uploads:/app/uploads
+      - mediedge-db:/app/db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  mediedge-db:
+  ollama-models:

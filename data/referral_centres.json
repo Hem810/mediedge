@@ -1,0 +1,63 @@
+{
+  "centres": [
+    {
+      "name": "PHC Pilani",
+      "type": "PHC",
+      "district": "Jhunjhunu",
+      "latitude": 28.3687,
+      "longitude": 75.6033,
+      "phone": "01596-242025",
+      "specialties": ["general", "maternal", "child health", "immunisation"],
+      "distance_from_pilani_km": 1.2,
+      "open_24h": false
+    },
+    {
+      "name": "CHC Chirawa",
+      "type": "CHC",
+      "district": "Jhunjhunu",
+      "latitude": 28.2492,
+      "longitude": 75.6392,
+      "phone": "01596-220100",
+      "specialties": ["general", "surgery", "paediatrics", "obstetrics"],
+      "distance_from_pilani_km": 14.5,
+      "open_24h": true
+    },
+    {
+      "name": "District Hospital Jhunjhunu",
+      "type": "DH",
+      "district": "Jhunjhunu",
+      "latitude": 28.1289,
+      "longitude": 75.3978,
+      "phone": "01592-232003",
+      "specialties": ["general", "surgery", "paediatrics", "obstetrics", "medicine", "ICU"],
+      "distance_from_pilani_km": 42.0,
+      "open_24h": true
+    },
+    {
+      "name": "AIIMS Jodhpur - Paediatrics",
+      "type": "Medical College",
+      "district": "Jodhpur",
+      "latitude": 26.2389,
+      "longitude": 73.0243,
+      "phone": "0291-2740741",
+      "specialties": ["paediatrics", "neonatology", "PICU", "NICU"],
+      "distance_from_pilani_km": 310.0,
+      "open_24h": true
+    },
+    {
+      "name": "RUHS Jaipur",
+      "type": "Medical College",
+      "district": "Jaipur",
+      "latitude": 26.8940,
+      "longitude": 75.8070,
+      "phone": "0141-2706631",
+      "specialties": ["all specialties", "cardiac surgery", "neurosurgery"],
+      "distance_from_pilani_km": 175.0,
+      "open_24h": true
+    }
+  ],
+  "ambulance": {
+    "number": "108",
+    "notes": "Free emergency ambulance - Rajasthan 108. Average response time: 18-25 minutes in rural areas."
+  }
+}

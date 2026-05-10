@@ -1,0 +1,137 @@
+{
+  "version": "NHM India Essential Medicines 2023",
+  "drugs": [
+    {
+      "generic_name": "Amoxicillin",
+      "generic_name_hindi": "अमोक्सिसिलिन",
+      "category": "Antibiotic",
+      "adult_dose": "500mg three times daily for 5-7 days",
+      "child_dose": "40mg/kg/day in 3 divided doses for 5 days",
+      "child_dose_by_weight": "4-6kg: 125mg TDS | 6-10kg: 250mg TDS | 10-15kg: 375mg TDS | 15-25kg: 500mg TDS",
+      "route": "oral",
+      "contraindications": "Penicillin allergy - use azithromycin",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Paracetamol",
+      "generic_name_hindi": "पैरासिटामोल",
+      "category": "Analgesic/Antipyretic",
+      "adult_dose": "500-1000mg every 4-6 hours, max 4g/day",
+      "child_dose": "15mg/kg/dose every 4-6 hours, max 5 doses/day",
+      "child_dose_by_weight": "4-6kg: 60mg | 6-10kg: 100mg | 10-15kg: 150mg | 15-25kg: 250mg",
+      "route": "oral",
+      "contraindications": "Liver disease - reduce dose",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Oral Rehydration Salts",
+      "generic_name_hindi": "ORS (जीवन-जल)",
+      "category": "Rehydration",
+      "adult_dose": "200-400mL after each loose stool",
+      "child_dose": "50-100mL/kg over 4 hours for some dehydration",
+      "child_dose_by_weight": "50mL/kg over 4 hours for some dehydration; 75mL/kg if more dehydrated",
+      "route": "oral",
+      "contraindications": "Severe dehydration needs IV fluids; unable to drink",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Zinc sulfate",
+      "generic_name_hindi": "जिंक सल्फेट",
+      "category": "Micronutrient/Antidiarrhoeal",
+      "adult_dose": "Not routinely indicated",
+      "child_dose": "2-6 months: 10mg daily for 14 days; >6 months: 20mg daily for 14 days",
+      "child_dose_by_weight": "2-6 months: 10mg OD | >6 months: 20mg OD",
+      "route": "oral",
+      "contraindications": "None at recommended doses",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Artemether-Lumefantrine",
+      "generic_name_hindi": "आर्टेमेथर-लुमेफेंट्रिन",
+      "category": "Antimalarial",
+      "adult_dose": "4 tablets at 0, 8, 24, 36, 48, 60 hours",
+      "child_dose": "5-14kg: 1 tablet | 15-24kg: 2 tablets | 25-34kg: 3 tablets | >34kg: 4 tablets",
+      "child_dose_by_weight": "5-14kg: 1 tab | 15-24kg: 2 tabs | 25-34kg: 3 tabs",
+      "route": "oral",
+      "contraindications": "First trimester pregnancy",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Cotrimoxazole",
+      "generic_name_hindi": "कोट्राइमोक्साजोल",
+      "category": "Antibiotic",
+      "adult_dose": "960mg twice daily for 5-7 days",
+      "child_dose": "TMP 6mg/kg/day in 2 divided doses",
+      "child_dose_by_weight": "6-10kg: 240mg BD | 10-20kg: 480mg BD",
+      "route": "oral",
+      "contraindications": "Sulfonamide allergy; severe renal/liver disease; newborns",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Iron-Folic Acid",
+      "generic_name_hindi": "आयरन-फोलिक एसिड",
+      "category": "Micronutrient",
+      "adult_dose": "1 tablet daily (60mg iron + 400mcg folic acid)",
+      "child_dose": "3-5 years: 20mg daily | Infants: 2mg/kg/day",
+      "child_dose_by_weight": "Infants: 2mg/kg/day elemental iron",
+      "route": "oral",
+      "contraindications": "Not during acute malaria",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Clotrimazole 1%",
+      "generic_name_hindi": "क्लोट्राइमाजोल क्रीम",
+      "category": "Antifungal",
+      "adult_dose": "Apply twice daily for 2-4 weeks",
+      "child_dose": "Apply twice daily for 2-4 weeks",
+      "child_dose_by_weight": "Apply thin layer to affected area twice daily",
+      "route": "topical",
+      "contraindications": "Hypersensitivity to clotrimazole",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Permethrin 5%",
+      "generic_name_hindi": "परमेथ्रिन क्रीम",
+      "category": "Antiparasitic",
+      "adult_dose": "Apply from neck to toes, leave 8-14 hours, wash off",
+      "child_dose": "Same as adult from 2 months of age",
+      "child_dose_by_weight": "Apply to entire body surface from neck down",
+      "route": "topical",
+      "contraindications": "Avoid eyes; age <2 months",
+      "in_nhm_formulary": true,
+      "who_essential": false
+    },
+    {
+      "generic_name": "Azithromycin",
+      "generic_name_hindi": "एज़िथ्रोमाइसिन",
+      "category": "Antibiotic",
+      "adult_dose": "500mg once daily for 3 days",
+      "child_dose": "10mg/kg/day once daily for 3-5 days",
+      "child_dose_by_weight": "5-10kg: 100mg OD | 10-20kg: 200mg OD | 20-30kg: 300mg OD",
+      "route": "oral",
+      "contraindications": "Macrolide allergy",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    },
+    {
+      "generic_name": "Vitamin A",
+      "generic_name_hindi": "विटामिन ए",
+      "category": "Micronutrient",
+      "adult_dose": "200,000 IU as needed",
+      "child_dose": "6-11 months: 100,000 IU | 12-59 months: 200,000 IU",
+      "child_dose_by_weight": "6-11 months: 100,000 IU | 12-59 months: 200,000 IU every 6 months",
+      "route": "oral",
+      "contraindications": "Do not repeat within 6 months",
+      "in_nhm_formulary": true,
+      "who_essential": true
+    }
+  ]
+}

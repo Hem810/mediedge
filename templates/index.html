@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediEdge — Rural Health AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0A2318;--ink-2:#2D5045;--ink-3:#6B9988;
+  --cream:#F4EFE4;--cream-2:#EDE7D8;--cream-3:#E3DAC8;
+  --teal:#1D9E75;--teal-d:#0A6E5C;--teal-l:#E1F5EE;
+  --coral:#D95F3B;--coral-l:#FAECE7;
+  --amber:#C47C2B;--amber-l:#FFF3E0;
+  --moss:#2E7D32;--moss-l:#E8F5E9;
+  --info:#01579B;--info-l:#E1F5FE;
+  --card:#FFFFFF;--border:rgba(10,35,24,.12);
+  --shadow:0 2px 12px rgba(10,35,24,.08);
+  --shadow-lg:0 8px 40px rgba(10,35,24,.14);
+  --r:12px;--r-lg:18px;
+}
+html{font-size:15px}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;line-height:1.6}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.2}
+.hindi{font-family:'Noto Sans Devanagari',sans-serif}
+code,.code{font-family:'JetBrains Mono',monospace;font-size:.8rem}
+
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+.sidebar{background:var(--ink);color:var(--cream);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden}
+.sidebar-brand{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-icon{width:38px;height:38px;background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px}
+.brand-name{font-family:'DM Serif Display',serif;font-size:20px;color:var(--cream);letter-spacing:-.2px}
+.brand-sub{font-family:'Noto Sans Devanagari',sans-serif;font-size:11px;color:rgba(255,255,255,.45);margin-top:2px}
+.sidebar-nav{padding:14px 10px;flex:1;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;cursor:pointer;font-size:.87rem;font-weight:500;color:rgba(255,255,255,.55);transition:all .18s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.nav-item.active{background:rgba(29,158,117,.18);color:var(--teal);font-weight:600}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.sidebar-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);font-size:.75rem;color:rgba(255,255,255,.3)}
+.offline-badge{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border-radius:7px;padding:7px 10px;margin-top:8px}
+.offline-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.main{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--cream);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:1.4rem}
+.topbar-sub{font-size:.8rem;color:var(--ink-3);margin-top:1px}
+.content{padding:24px 28px;flex:1}
+
+.view{display:none;animation:fadeIn .25s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow)}
+.card-sm{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 16px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:var(--r-lg) var(--r-lg) 0 0}
+.stat-card.urgent::before{background:var(--coral)}
+.stat-card.warn::before{background:var(--amber)}
+.stat-val{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--ink);line-height:1}
+.stat-lbl{font-size:.75rem;color:var(--ink-3);margin-top:4px;font-weight:500}
+
+.urg-high{--uc:var(--coral);--ub:var(--coral-l)}
+.urg-medium{--uc:var(--amber);--ub:var(--amber-l)}
+.urg-low{--uc:var(--moss);--ub:var(--moss-l)}
+.urg-observation{--uc:var(--info);--ub:var(--info-l)}
+
+.urgency-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;letter-spacing:.5px;background:var(--ub);color:var(--uc);font-family:'DM Sans',sans-serif}
+.urgency-banner{border-radius:var(--r-lg);padding:16px 20px;background:var(--ub);border:1.5px solid var(--uc);margin-bottom:20px}
+
+.assessment-list{display:flex;flex-direction:column;gap:10px}
+.assessment-row{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center;cursor:pointer;transition:all .18s}
+.assessment-row:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:var(--shadow)}
+
+.avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.1rem;flex-shrink:0}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:.78rem;font-weight:600;color:var(--ink-2)}
+.field .hint{font-size:.72rem;color:var(--ink-3)}
+
+input,select,textarea{background:var(--cream);border:1.5px solid var(--cream-3);border-radius:9px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);transition:border-color .18s;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);background:var(--card)}
+textarea{resize:vertical;min-height:90px;font-family:'DM Sans',sans-serif}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:9px;border:none;font-family:'DM Sans',sans-serif;font-size:.87rem;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-primary{background:var(--teal-d);color:#fff}
+.btn-primary:hover{background:var(--teal);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--ink-2)}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-lg{padding:13px 28px;font-size:.95rem;border-radius:11px}
+
+.recorder-card{border:2px dashed var(--cream-3);border-radius:var(--r-lg);padding:24px;text-align:center;background:var(--cream);transition:border-color .3s}
+.recorder-card.active{border-color:var(--coral);border-style:solid;background:var(--coral-l)}
+
+.mic-btn{width:72px;height:72px;border-radius:50%;border:none;background:var(--teal-d);color:#fff;font-size:28px;cursor:pointer;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 4px 20px rgba(10,110,92,.3)}
+.mic-btn.recording{background:var(--coral);box-shadow:0 0 0 0 rgba(217,95,59,.4);animation:mic-pulse 1.2s ease-in-out infinite}
+@keyframes mic-pulse{0%{box-shadow:0 0 0 0 rgba(217,95,59,.4)}70%{box-shadow:0 0 0 16px rgba(217,95,59,0)}100%{box-shadow:0 0 0 0 rgba(217,95,59,0)}}
+
+.waveform{display:flex;align-items:center;justify-content:center;gap:4px;height:32px;margin:12px 0}
+.wave-bar{width:4px;border-radius:2px;background:var(--coral);opacity:.8;animation:wave .8s ease-in-out infinite}
+@keyframes wave{0%,100%{height:4px}50%{height:24px}}
+
+.transcript-box{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-family:'Noto Sans Devanagari',sans-serif;font-size:.92rem;line-height:1.7;text-align:left;margin-top:12px}
+.transcript-en{font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink-3);font-style:italic;margin-top:6px;text-align:left}
+
+.vitals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vital-box{background:var(--cream);border:1.5px solid var(--cream-3);border-radius:10px;padding:10px 12px}
+.vital-box label{font-size:.72rem;font-weight:600;color:var(--ink-3);display:block;margin-bottom:4px}
+.vital-box input{background:none;border:none;padding:0;font-size:1.2rem;font-weight:600;color:var(--ink);font-family:'DM Serif Display',serif}
+.vital-box input:focus{outline:none}
+.vital-box .unit{font-size:.7rem;color:var(--ink-3)}
+.vital-box.flag{border-color:var(--coral);background:var(--coral-l)}
+.vital-box.flag label{color:var(--coral)}
+
+.analysis-overlay{position:fixed;inset:0;background:rgba(10,35,24,.6);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.analysis-card{background:var(--card);border-radius:var(--r-lg);padding:40px 48px;text-align:center;max-width:420px;box-shadow:var(--shadow-lg)}
+
+.gemma-orb{width:80px;height:80px;margin:0 auto 24px;position:relative}
+.orb-ring{position:absolute;border-radius:50%;border:2px solid;animation:orb-spin 3s linear infinite}
+.orb-ring:nth-child(1){inset:0;border-color:var(--teal);animation-duration:2s}
+.orb-ring:nth-child(2){inset:-10px;border-color:rgba(29,158,117,.35);animation-duration:3s;animation-direction:reverse}
+.orb-ring:nth-child(3){inset:-20px;border-color:rgba(29,158,117,.15);animation-duration:4s}
+.orb-core{position:absolute;inset:8px;background:var(--teal-d);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff}
+@keyframes orb-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+.stream-output{margin-top:20px;background:var(--cream);border:1px solid var(--border);border-radius:9px;padding:12px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--ink-2);max-height:100px;overflow:hidden;text-align:left;line-height:1.5}
+
+.summary-block{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:16px}
+.summary-hindi{font-family:'Noto Sans Devanagari',sans-serif;font-size:1.05rem;line-height:1.8;color:var(--ink)}
+.summary-en{font-size:.85rem;color:var(--ink-2);font-style:italic;margin-top:6px;line-height:1.5}
+
+.section-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--ink-2);margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.diff-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;gap:14px;margin-bottom:8px;transition:all .18s;cursor:pointer}
+.diff-card:hover{border-color:var(--teal);box-shadow:var(--shadow)}
+.diff-card.top-diff{border-color:var(--uc);border-width:1.5px}
+.conf-circle{width:48px;height:48px;flex-shrink:0;position:relative}
+.conf-circle svg{width:48px;height:48px}
+.conf-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700}
+
+.diff-body h4{font-size:.95rem;font-weight:600;margin-bottom:2px}
+.diff-hindi{font-family:'Noto Sans Devanagari',sans-serif;font-size:.82rem;color:var(--ink-3)}
+.diff-icd{font-size:.72rem;color:var(--ink-3);margin-top:2px}
+.diff-findings{margin-top:8px;font-size:.78rem;display:none}
+.diff-card.expanded .diff-findings{display:block}
+.finding{display:flex;gap:6px;margin-bottom:3px}
+
+.med-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:8px}
+.med-icon{width:36px;height:36px;border-radius:9px;background:var(--teal-l);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.med-name{font-weight:600;font-size:.92rem}
+.med-hindi{font-family:'Noto Sans Devanagari',sans-serif;font-size:.8rem;color:var(--ink-3)}
+.med-dose{font-size:.78rem;color:var(--ink-2);margin-top:3px}
+.nhm-tag{font-size:.65rem;font-weight:700;background:var(--moss-l);color:var(--moss);padding:1px 5px;border-radius:3px;margin-left:5px}
+
+.referral-box{border-radius:var(--r);padding:16px 18px;border:1.5px solid var(--uc);background:var(--ub);margin-bottom:16px}
+.ref-facility{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-top:4px}
+.ref-meta{font-size:.78rem;color:var(--ink-2);margin-top:2px}
+.ref-reason-hindi{font-family:'Noto Sans Devanagari',sans-serif;font-size:.88rem;margin-top:8px;color:var(--ink)}
+.ref-actions{display:flex;gap:8px;margin-top:12px}
+.ref-btn{flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--uc);background:none;color:var(--uc);font-weight:600;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:'DM Sans',sans-serif;transition:all .18s}
+.ref-btn:hover{background:var(--uc);color:#fff}
+
+.soap-note{background:var(--cream);border:1px solid var(--border);border-radius:9px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:.75rem;line-height:1.7;color:var(--ink-2);white-space:pre-wrap}
+
+.history-filters{display:flex;gap:10px;margin-bottom:18px}
+.history-filters input{flex:1}
+
+.hist-row{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:grid;grid-template-columns:40px 1fr auto auto;gap:12px;align-items:center;cursor:pointer;transition:all .18s;margin-bottom:8px}
+.hist-row:hover{border-color:var(--teal);transform:translateY(-1px)}
+
+.step-progress{display:flex;align-items:center;margin-bottom:28px}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative}
+.step-item:not(:last-child)::after{content:'';position:absolute;top:14px;left:50%;right:-50%;height:2px;background:var(--cream-3)}
+.step-item.done::after,.step-item.active::after{background:var(--teal)}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;z-index:1;background:var(--cream-3);color:var(--ink-3);transition:all .25s}
+.step-item.done .step-dot{background:var(--teal);color:#fff}
+.step-item.active .step-dot{background:var(--teal-d);color:#fff;box-shadow:0 0 0 4px rgba(29,158,117,.2)}
+.step-label{font-size:.68rem;color:var(--ink-3);font-weight:500;text-align:center}
+.step-item.active .step-label{color:var(--teal-d);font-weight:600}
+
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--ink);color:var(--cream);border-radius:10px;padding:11px 18px;font-size:.85rem;min-width:240px;animation:slideIn .3s ease;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px}
+.toast.success{background:var(--moss)}
+.toast.error{background:var(--coral)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:none;opacity:1}}
+
+.drop-zone{border:2px dashed var(--cream-3);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--cream)}
+.drop-zone:hover,.drop-zone.over{border-color:var(--teal);background:var(--teal-l)}
+.drop-zone img{max-width:100%;max-height:160px;border-radius:8px;margin-top:8px}
+
+.row{display:flex;gap:14px;align-items:center}
+.row-end{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.divider{height:1px;background:var(--border);margin:20px 0}
+.text-sm{font-size:.82rem;color:var(--ink-3)}
+.text-muted{color:var(--ink-3)}
+.bold{font-weight:600}
+.empty-state{text-align:center;padding:48px 24px;color:var(--ink-3)}
+.empty-state .icon{font-size:48px;margin-bottom:12px}
+
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .vitals-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">🏥</div>
+      <div class="brand-name">MediEdge</div>
+      <div class="brand-sub hindi">ग्रामीण स्वास्थ्य AI सहायक</div>
+      <div class="brand-sub" style="font-family:'DM Sans',sans-serif">Rural Health AI Assistant</div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="dashboard" onclick="navigate('dashboard')">
+        <span class="nav-icon">⊞</span> Dashboard
+      </button>
+      <button class="nav-item" data-view="new-assessment" onclick="navigate('new-assessment')">
+        <span class="nav-icon">＋</span> New Assessment
+      </button>
+      <button class="nav-item" data-view="history" onclick="navigate('history')">
+        <span class="nav-icon">◷</span> History
+      </button>
+      <button class="nav-item" data-view="patients" onclick="navigate('patients')">
+        <span class="nav-icon">♟</span> Patients
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div style="opacity:.5;margin-bottom:4px">Powered by Gemma 4</div>
+      <div class="offline-badge">
+        <div class="offline-dot"></div>
+        <span id="conn-label">Checking…</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <div class="topbar-title" id="page-title">Dashboard</div>
+        <div class="topbar-sub hindi" id="page-sub-hi">आज का सारांश</div>
+        <div class="topbar-sub" id="page-sub-en" style="font-style:italic;opacity:.8">Today's summary</div>
+      </div>
+      <div class="row" style="gap:10px">
+        <button class="btn btn-primary" onclick="navigate('new-assessment')">+ New Assessment</button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard">
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-val" id="stat-today">–</div><div class="stat-lbl">Assessments today</div></div>
+          <div class="stat-card urgent"><div class="stat-val" id="stat-urgent">–</div><div class="stat-lbl">Urgent cases today</div></div>
+          <div class="stat-card"><div class="stat-val" id="stat-total">–</div><div class="stat-lbl">Total assessments</div></div>
+          <div class="stat-card warn"><div class="stat-val" id="stat-patients">–</div><div class="stat-lbl">Total patients</div></div>
+        </div>
+        <div class="row" style="justify-content:space-between;margin-bottom:14px">
+          <h2 style="font-size:1.1rem">Recent assessments</h2>
+          <button class="btn btn-outline" onclick="navigate('history')">See all →</button>
+        </div>
+        <div class="assessment-list" id="recent-list">
+          <div class="empty-state"><div class="icon">📋</div>No assessments yet</div>
+        </div>
+      </div>
+
+      <!-- NEW ASSESSMENT -->
+      <div class="view" id="view-new-assessment">
+        <div class="step-progress">
+          <div class="step-item active" id="step-1"><div class="step-dot">1</div><div class="step-label">Patient</div></div>
+          <div class="step-item" id="step-2"><div class="step-dot">2</div><div class="step-label">Symptoms</div></div>
+          <div class="step-item" id="step-3"><div class="step-dot">3</div><div class="step-label">Vitals</div></div>
+          <div class="step-item" id="step-4"><div class="step-dot">4</div><div class="step-label">Analyse</div></div>
+        </div>
+
+        <div id="panel-1">
+          <div class="card">
+            <h2 style="margin-bottom:18px">Patient details</h2>
+            <div class="form-grid">
+              <div class="field form-full">
+                <label>Full name *</label>
+                <input id="p-name" placeholder="e.g. Ramu Kumar" required>
+              </div>
+              <div class="field">
+                <label>Age – years</label>
+                <input id="p-age-yr" type="number" min="0" max="120" value="0">
+              </div>
+              <div class="field">
+                <label>Age – months</label>
+                <input id="p-age-mo" type="number" min="0" max="11" value="0">
+              </div>
+              <div class="field">
+                <label>Sex *</label>
+                <select id="p-sex">
+                  <option value="M">Male / पुरुष</option>
+                  <option value="F">Female / महिला</option>
+                  <option value="O">Other / अन्य</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Village</label>
+                <input id="p-village" placeholder="e.g. Bissau">
+              </div>
+              <div class="field">
+                <label>Phone</label>
+                <input id="p-phone" type="tel" placeholder="10-digit number">
+              </div>
+              <div class="field">
+                <label>Health worker name</label>
+                <input id="p-worker" placeholder="Your name">
+              </div>
+            </div>
+            <div class="row-end">
+              <button class="btn btn-primary btn-lg" onclick="goStep2()">Continue → Record Symptoms</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-2" style="display:none">
+          <div class="card">
+            <h2 style="margin-bottom:6px">Record symptoms</h2>
+            <p class="text-sm hindi" style="margin-bottom:2px">हिंदी में लक्षण बोलें</p>
+            <p class="text-sm" style="margin-bottom:20px;font-style:italic;opacity:.8">Speak symptoms in Hindi — Whisper will transcribe</p>
+            <div class="recorder-card" id="recorder-card">
+              <button class="mic-btn" id="mic-btn" onclick="toggleRecording()">🎙️</button>
+              <div id="rec-status" style="font-weight:600;margin-bottom:4px">Tap microphone to record</div>
+              <div class="text-sm" id="rec-sub">Speak symptoms in Hindi or English</div>
+              <div class="waveform" id="waveform" style="display:none">
+                <div class="wave-bar" style="animation-delay:.0s"></div>
+                <div class="wave-bar" style="animation-delay:.1s"></div>
+                <div class="wave-bar" style="animation-delay:.2s"></div>
+                <div class="wave-bar" style="animation-delay:.3s"></div>
+                <div class="wave-bar" style="animation-delay:.4s"></div>
+                <div class="wave-bar" style="animation-delay:.5s"></div>
+                <div class="wave-bar" style="animation-delay:.6s"></div>
+              </div>
+              <div id="transcript-area" style="display:none">
+                <div class="transcript-box" id="transcript-hi"></div>
+                <div class="transcript-en" id="transcript-en"></div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="field">
+              <label>Or type symptoms</label>
+              <textarea id="symptoms-manual" placeholder="Describe symptoms…
+e.g. Child has fever for 3 days, cough, fast breathing. Not feeding well."></textarea>
+            </div>
+            <div class="row-end">
+              <button class="btn btn-outline" onclick="goStep(1)">← Back</button>
+              <button class="btn btn-primary btn-lg" onclick="goStep3()">Continue → Vitals</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-3" style="display:none">
+          <div class="card">
+            <h2 style="margin-bottom:18px">Vitals <span class="text-muted" style="font-size:.75rem;font-family:'DM Sans',sans-serif">(optional)</span></h2>
+            <div class="vitals-grid">
+              <div class="vital-box" id="vb-temp">
+                <label>🌡️ Temperature (°C)</label>
+                <input id="v-temp" type="number" step="0.1" placeholder="37.0" oninput="flagVital(this,'temp')">
+                <div class="unit">Normal: 36.5–37.5 °C</div>
+              </div>
+              <div class="vital-box" id="vb-hr">
+                <label>❤️ Heart rate (bpm)</label>
+                <input id="v-hr" type="number" placeholder="80" oninput="flagVital(this,'hr')">
+                <div class="unit">Normal child: 70–120</div>
+              </div>
+              <div class="vital-box" id="vb-rr">
+                <label>💨 Resp. rate (/min)</label>
+                <input id="v-rr" type="number" placeholder="20" oninput="flagVital(this,'rr')">
+                <div class="unit">Fast >40 / >50 (&lt;1yr)</div>
+              </div>
+              <div class="vital-box" id="vb-spo2">
+                <label>🔴 SpO₂ (%)</label>
+                <input id="v-spo2" type="number" placeholder="98" oninput="flagVital(this,'spo2')">
+                <div class="unit">Normal: ≥ 94%</div>
+              </div>
+              <div class="vital-box">
+                <label>⚖️ Weight (kg)</label>
+                <input id="v-wt" type="number" step="0.1">
+                <div class="unit">For drug dosing</div>
+              </div>
+              <div class="vital-box">
+                <label>📏 MUAC (cm)</label>
+                <input id="v-muac" type="number" step="0.1">
+                <div class="unit">SAM &lt;11.5 / MAM &lt;12.5</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <h3 style="margin-bottom:10px;font-size:1rem">Clinical photo <span class="text-muted" style="font-size:.75rem;font-family:'DM Sans',sans-serif">(optional)</span></h3>
+            <div class="drop-zone" id="drop-zone" onclick="document.getElementById('img-input').click()"
+                 ondragover="event.preventDefault();this.classList.add('over')"
+                 ondragleave="this.classList.remove('over')"
+                 ondrop="handleDrop(event)">
+              <div id="drop-label">
+                <div style="font-size:32px;margin-bottom:6px">📷</div>
+                <div style="font-weight:600">Click or drag photo here</div>
+                <div class="text-sm">Wound, rash, skin condition, medication</div>
+              </div>
+            </div>
+            <input type="file" id="img-input" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
+            <div class="row-end">
+              <button class="btn btn-outline" onclick="goStep(2)">← Back</button>
+              <button class="btn btn-primary btn-lg" onclick="runAnalysis()">🔬 Analyse with Gemma 4</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-4" style="display:none">
+          <div id="result-container"></div>
+          <div class="row-end" style="margin-top:16px">
+            <button class="btn btn-outline" onclick="resetAssessment()">← New assessment</button>
+            <button class="btn btn-primary" onclick="navigate('history')">View history</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="view" id="view-history">
+        <div class="history-filters">
+          <input id="hist-search" placeholder="Search by name or village…" oninput="loadHistory()">
+          <select id="hist-urgency" onchange="loadHistory()">
+            <option value="">All urgency</option>
+            <option value="high">High (refer now)</option>
+            <option value="medium">Medium (refer today)</option>
+            <option value="low">Low (treat & monitor)</option>
+            <option value="observation">Observation</option>
+          </select>
+        </div>
+        <div id="history-list"><div class="empty-state"><div class="icon">📋</div>Loading…</div></div>
+      </div>
+
+      <!-- PATIENTS -->
+      <div class="view" id="view-patients">
+        <div class="history-filters" style="margin-bottom:18px">
+          <input id="pt-search" placeholder="Search patients…" oninput="loadPatients()">
+        </div>
+        <div id="patients-list"><div class="empty-state"><div class="icon">👥</div>Loading…</div></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modals -->
+<div id="detail-modal" style="display:none;position:fixed;inset:0;background:rgba(10,35,24,.5);z-index:50;overflow-y:auto;padding:40px 20px">
+  <div style="max-width:700px;margin:0 auto;background:var(--card);border-radius:var(--r-lg);padding:28px;position:relative;box-shadow:var(--shadow-lg)">
+    <button onclick="closeModal()" style="position:absolute;top:14px;right:14px;border:none;background:none;font-size:20px;cursor:pointer;color:var(--ink-3)">✕</button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<div class="analysis-overlay" id="analysis-overlay" style="display:none">
+  <div class="analysis-card">
+    <div class="gemma-orb">
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-core">🧠</div>
+    </div>
+    <h2 style="font-size:1.4rem;margin-bottom:6px">Gemma 4 analysing…</h2>
+    <p class="hindi text-muted" style="margin-bottom:2px">जांच हो रही है</p>
+    <p class="text-muted" style="font-size:.82rem;font-style:italic">Analysis in progress</p>
+    <p class="text-sm" style="margin-top:8px;color:var(--teal-d)">WHO IMCI protocols · NHM formulary</p>
+    <div class="stream-output" id="analysis-stream">Retrieving WHO IMCI protocols…</div>
+  </div>
+</div>
+
+<div class="toast-container" id="toasts"></div>
+
+<script>
+const state = {
+  currentView: 'dashboard',
+  patient: null, patientId: null,
+  transcript: { hi: '', en: '' },
+  imagePath: null,
+  isRecording: false, mediaRecorder: null, audioChunks: [],
+  lastAssessment: null,
+};
+
+const viewConfig = {
+  'dashboard':      { title: 'Dashboard',       subHi: 'आज का सारांश',       subEn: "Today's summary" },
+  'new-assessment': { title: 'New Assessment',  subHi: 'नया मूल्यांकन',      subEn: 'New patient assessment' },
+  'history':        { title: 'History',          subHi: 'पिछले मूल्यांकन',    subEn: 'Past assessments' },
+  'patients':       { title: 'Patients',         subHi: 'सभी मरीज',           subEn: 'All registered patients' },
+};
+
+function navigate(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`view-${view}`)?.classList.add('active');
+  document.querySelector(`[data-view="${view}"]`)?.classList.add('active');
+  const cfg = viewConfig[view] || {};
+  document.getElementById('page-title').textContent = cfg.title || view;
+  document.getElementById('page-sub-hi').textContent = cfg.subHi || '';
+  document.getElementById('page-sub-en').textContent = cfg.subEn || '';
+  state.currentView = view;
+  if (view === 'dashboard') loadDashboard();
+  if (view === 'history') loadHistory();
+  if (view === 'patients') loadPatients();
+  if (view === 'new-assessment') resetAssessment();
+}
+
+async function loadDashboard() {
+  try {
+    const data = await api('/api/dashboard');
+    const s = data.stats;
+    document.getElementById('stat-today').textContent = s.assessments_today;
+    document.getElementById('stat-urgent').textContent = s.urgent_today;
+    document.getElementById('stat-total').textContent = s.total_assessments;
+    document.getElementById('stat-patients').textContent = s.total_patients;
+    renderRecentList(data.recent);
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+function renderRecentList(items) {
+  const el = document.getElementById('recent-list');
+  if (!items?.length) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">📋</div>No assessments yet — start one above</div>';
+    return;
+  }
+  el.innerHTML = items.map(a => {
+    const urg = a.overall_urgency || 'observation';
+    const top = a.differentials?.[0];
+    const dxHi = top?.name_hindi || '';
+    const dxEn = top?.name || '—';
+    return `<div class="assessment-row urg-${urg}" onclick="showAssessment('${a.id}')">
+      <div class="avatar urg-${urg}" style="background:var(--ub);color:var(--uc)">${(a.patient_name||'?')[0].toUpperCase()}</div>
+      <div>
+        <div class="bold">${esc(a.patient_name||'Unknown')}</div>
+        <div class="text-sm">${fmtAge(a.age_months)} · ${a.sex||'?'} · ${esc(a.village||'—')}</div>
+        ${dxHi ? `<div class="hindi" style="font-size:.85rem;color:var(--ink-2);margin-top:2px">${esc(dxHi)}</div>` : ''}
+        <div class="text-sm" style="font-style:italic">${esc(dxEn)}</div>
+      </div>
+      <div>
+        <div class="urgency-pill urg-${urg}">${urgLabel(urg)}</div>
+        <div class="text-sm" style="margin-top:4px;text-align:right">${fmtTime(a.created_at)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function resetAssessment() {
+  state.patient = null; state.patientId = null;
+  state.transcript = { hi:'', en:'' };
+  state.imagePath = null;
+  ['p-name','p-village','p-phone','p-worker','symptoms-manual','v-temp','v-hr','v-rr','v-spo2','v-wt','v-muac'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('p-age-yr').value = '0';
+  document.getElementById('p-age-mo').value = '0';
+  document.getElementById('drop-label').innerHTML = `<div style="font-size:32px;margin-bottom:6px">📷</div><div style="font-weight:600">Click or drag photo here</div><div class="text-sm">Wound, rash, skin condition, medication</div>`;
+  document.getElementById('transcript-area').style.display = 'none';
+  document.getElementById('recorder-card').classList.remove('active');
+  document.getElementById('waveform').style.display = 'none';
+  document.getElementById('rec-status').textContent = 'Tap microphone to record';
+  document.querySelectorAll('.vital-box').forEach(b => b.classList.remove('flag'));
+  goStep(1);
+}
+
+function goStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const panel = document.getElementById(`panel-${i}`);
+    if (panel) panel.style.display = i === n ? 'block' : 'none';
+    const step = document.getElementById(`step-${i}`);
+    if (step) {
+      step.classList.remove('active','done');
+      if (i < n) step.classList.add('done');
+      else if (i === n) step.classList.add('active');
+    }
+  }
+}
+
+async function goStep2() {
+  const name = document.getElementById('p-name').value.trim();
+  if (!name) { toast('Please enter patient name', 'error'); return; }
+  const yr = parseInt(document.getElementById('p-age-yr').value || '0') || 0;
+  const mo = parseInt(document.getElementById('p-age-mo').value || '0') || 0;
+  state.patient = {
+    name, age_months: yr * 12 + mo,
+    sex: document.getElementById('p-sex').value,
+    village: document.getElementById('p-village').value.trim() || null,
+    phone: document.getElementById('p-phone').value.trim() || null,
+    worker_name: document.getElementById('p-worker').value.trim() || null,
+  };
+  try {
+    const p = await api('/api/patients', { method:'POST', body: state.patient });
+    state.patientId = p.id;
+    goStep(2);
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+function goStep3() {
+  const manual = document.getElementById('symptoms-manual').value.trim();
+  const hi = state.transcript.hi || manual;
+  const en = state.transcript.en || manual;
+  if (!hi && !manual) { toast('Please record or type symptoms', 'error'); return; }
+  state.transcript.hi = hi;
+  state.transcript.en = en || hi;
+  goStep(3);
+}
+
+async function runAnalysis() {
+  const symptoms = state.transcript.en || state.transcript.hi || document.getElementById('symptoms-manual').value.trim();
+  if (!symptoms) { toast('No symptoms recorded', 'error'); return; }
+
+  const vitals = {};
+  const vMap = {temperature:'v-temp', heart_rate:'v-hr', resp_rate:'v-rr', spo2:'v-spo2', weight:'v-wt', muac:'v-muac'};
+  for (const [key, id] of Object.entries(vMap)) {
+    const v = document.getElementById(id)?.value;
+    if (v) vitals[key] = parseFloat(v);
+  }
+
+  document.getElementById('analysis-overlay').style.display = 'flex';
+  simulateStream();
+
+  try {
+    const result = await api('/api/assessments', {
+      method: 'POST',
+      body: {
+        patient_id: state.patientId,
+        symptoms,
+        vitals: Object.keys(vitals).length ? vitals : null,
+        image_path: state.imagePath || null,
+        worker_name: state.patient?.worker_name,
+      }
+    });
+    document.getElementById('analysis-overlay').style.display = 'none';
+    clearInterval(streamInterval);
+    state.lastAssessment = result;
+    goStep(4);
+    document.getElementById('panel-4').style.display = 'block';
+    document.getElementById('result-container').innerHTML = buildResultHTML(result, true);
+    for (let i = 1; i <= 4; i++) {
+      const s = document.getElementById(`step-${i}`); if (s) s.classList.add('done');
+    }
+    loadDashboard();
+  } catch(e) {
+    document.getElementById('analysis-overlay').style.display = 'none';
+    clearInterval(streamInterval);
+    toast('Analysis failed: ' + e.message, 'error');
+  }
+}
+
+let streamInterval = null;
+const streamMsgs = [
+  'Retrieving WHO IMCI protocols…',
+  'Building clinical context…',
+  'Gemma 4 reasoning over symptoms…',
+  'Generating differential diagnoses…',
+  'Checking NHM drug formulary…',
+  'Computing referral decision…',
+  'Formatting Hindi summary…',
+  'Finalising assessment…',
+];
+function simulateStream() {
+  let i = 0;
+  const el = document.getElementById('analysis-stream');
+  el.textContent = streamMsgs[0];
+  streamInterval = setInterval(() => {
+    i = (i + 1) % streamMsgs.length;
+    el.textContent = streamMsgs[i];
+  }, 900);
+}
+
+async function toggleRecording() {
+  if (state.isRecording) await stopRecording();
+  else await startRecording();
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    state.audioChunks = [];
+    state.mediaRecorder = new MediaRecorder(stream);
+    state.mediaRecorder.ondataavailable = e => { if (e.data.size > 0) state.audioChunks.push(e.data); };
+    state.mediaRecorder.start(200);
+    state.isRecording = true;
+    document.getElementById('mic-btn').classList.add('recording');
+    document.getElementById('mic-btn').textContent = '⏹️';
+    document.getElementById('rec-status').textContent = 'Recording…';
+    document.getElementById('rec-sub').innerHTML = '<span class="hindi">रोकने के लिए दबाएं</span><br><span style="font-size:.78rem;font-style:italic;opacity:.85">Tap again to stop</span>';
+    document.getElementById('recorder-card').classList.add('active');
+    document.getElementById('waveform').style.display = 'flex';
+  } catch(e) {
+    toast('Microphone access denied. Type symptoms manually instead.', 'error');
+  }
+}
+
+async function stopRecording() {
+  if (!state.mediaRecorder) return;
+  state.mediaRecorder.stop();
+  state.mediaRecorder.stream.getTracks().forEach(t => t.stop());
+  state.isRecording = false;
+  document.getElementById('mic-btn').classList.remove('recording');
+  document.getElementById('mic-btn').textContent = '⏳';
+  document.getElementById('rec-status').textContent = 'Transcribing…';
+  document.getElementById('waveform').style.display = 'none';
+  await new Promise(r => state.mediaRecorder.onstop = r);
+  const blob = new Blob(state.audioChunks, { type: 'audio/webm' });
+  const formData = new FormData();
+  formData.append('file', blob, 'recording.webm');
+  try {
+    const res = await fetch('/api/transcribe', { method:'POST', body: formData });
+    if (!res.ok) throw new Error('Transcription failed');
+    const data = await res.json();
+    state.transcript.hi = data.transcript || '';
+    state.transcript.en = data.translation || data.transcript || '';
+    document.getElementById('transcript-hi').textContent = state.transcript.hi;
+    document.getElementById('transcript-en').textContent = data.language === 'hi' ? `(English: ${state.transcript.en})` : '';
+    document.getElementById('transcript-area').style.display = 'block';
+    document.getElementById('mic-btn').textContent = '🎙️';
+    document.getElementById('rec-status').textContent = 'Recording complete — tap to re-record';
+    document.getElementById('rec-sub').textContent = '';
+    document.getElementById('recorder-card').classList.remove('active');
+  } catch(e) {
+    document.getElementById('mic-btn').textContent = '🎙️';
+    document.getElementById('rec-status').textContent = 'Failed — please type manually';
+    toast('Transcription error: ' + e.message, 'error');
+  }
+}
+
+function handleImageSelect(e) { uploadImage(e.target.files[0]); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('over');
+  uploadImage(e.dataTransfer.files[0]);
+}
+
+async function uploadImage(file) {
+  if (!file) return;
+  const fd = new FormData(); fd.append('file', file);
+  try {
+    const res = await fetch('/api/upload-image', { method:'POST', body: fd });
+    const data = await res.json();
+    state.imagePath = data.image_path;
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('drop-label').innerHTML = `<img src="${e.target.result}" alt="Clinical image"><div class="text-sm" style="margin-top:6px">✓ Image uploaded — click to replace</div>`;
+    };
+    reader.readAsDataURL(file);
+    toast('Image uploaded', 'success');
+  } catch(e) { toast('Image upload failed', 'error'); }
+}
+
+const vitalRanges = {
+  temp: { low: 36.0, high: 37.5 },
+  hr: { low: 60, high: 120 },
+  rr: { low: 12, high: 40 },
+  spo2: { low: 94, high: 100, inverted: true },
+};
+function flagVital(input, key) {
+  const box = input.closest('.vital-box');
+  const v = parseFloat(input.value);
+  if (isNaN(v)) { box.classList.remove('flag'); return; }
+  const r = vitalRanges[key]; if (!r) return;
+  const abnormal = r.inverted ? v < r.low : v > r.high || v < r.low;
+  box.classList.toggle('flag', abnormal);
+}
+
+function buildResultHTML(a) {
+  const urg = a.overall_urgency || 'observation';
+  const diffs = a.differentials || [];
+  const meds = a.medications || [];
+  const ref = a.referral;
+  const patName = a.patient_name || state.patient?.name || 'Patient';
+  const age = fmtAge(a.age_months || state.patient?.age_months);
+  const latency = a.inference_ms ? `${(a.inference_ms/1000).toFixed(1)}s` : '—';
+
+  const banner = `<div class="urgency-banner urg-${urg}">
+    <div class="urgency-pill urg-${urg}" style="margin-bottom:8px">${urgLabel(urg)}</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:1.6rem">${esc(patName)}</div>
+    <div class="text-sm">${age} · ${a.sex||state.patient?.sex||'?'} · ${esc(a.village||state.patient?.village||'—')}</div>
+    <div class="text-sm" style="margin-top:4px">Gemma 4 · ${latency} · ${a.created_at ? fmtTime(a.created_at) : 'just now'}</div>
+  </div>`;
+
+  const summary = `<div class="summary-block">
+    <div class="bold" style="margin-bottom:8px;font-size:.8rem;color:var(--ink-3)">SUMMARY</div>
+    ${a.plain_summary_hindi ? `<div class="summary-hindi">${esc(a.plain_summary_hindi)}</div>` : ''}
+    ${a.plain_summary ? `<div class="summary-en">${esc(a.plain_summary)}</div>` : ''}
+  </div>`;
+
+  let refHTML = '';
+  if (ref?.needed) {
+    const refUrg = ref.urgency || urg;
+    const refLabel = refUrg === 'high' ? 'IMMEDIATELY' : refUrg === 'medium' ? 'TODAY' : 'WHEN POSSIBLE';
+    refHTML = `<div class="section-title">🏥 Referral</div>
+    <div class="referral-box urg-${refUrg}">
+      <div style="font-size:.75rem;font-weight:700;color:var(--uc);letter-spacing:.4px">REFER ${refLabel}</div>
+      <div class="ref-facility">CHC Chirawa</div>
+      <div class="ref-meta">Community Health Centre · 14.5 km · 01596-220100</div>
+      ${ref.reason_hindi ? `<div class="ref-reason-hindi">${esc(ref.reason_hindi)}</div>` : ''}
+      ${ref.reason ? `<div class="ref-reason-en" style="font-size:.8rem;color:var(--ink-2);font-style:italic;margin-top:4px">${esc(ref.reason)}</div>` : ''}
+      <div class="ref-actions">
+        <button class="ref-btn" onclick="window.open('tel:01596220100')">📞 Call CHC</button>
+        <button class="ref-btn" onclick="window.open('tel:108')">🚑 Call 108</button>
+      </div>
+    </div>`;
+  }
+
+  const diffsHTML = diffs.map((d, i) => {
+    const pct = Math.round((d.confidence || 0) * 100);
+    const dUrg = d.urgency || 'observation';
+    const c = 2 * Math.PI * 18;
+    const off = c * (1 - (d.confidence || 0));
+    const sf = (d.supporting_findings || []).map(f => `<div class="finding"><span style="color:var(--moss)">✓</span> ${esc(f)}</div>`).join('');
+    const af = (d.against_findings || []).map(f => `<div class="finding"><span style="color:var(--ink-3)">–</span> ${esc(f)}</div>`).join('');
+    return `<div class="diff-card urg-${dUrg} ${i===0?'top-diff':''}" onclick="this.classList.toggle('expanded')">
+      <div class="conf-circle">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="18" fill="none" stroke="var(--ub)" stroke-width="3"/>
+          <circle cx="20" cy="20" r="18" fill="none" stroke="var(--uc)" stroke-width="3" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" stroke-linecap="round" transform="rotate(-90 20 20)"/>
+        </svg>
+        <div class="conf-pct" style="color:var(--uc)">${pct}%</div>
+      </div>
+      <div class="diff-body" style="flex:1">
+        ${d.name_hindi ? `<div class="diff-hindi" style="font-size:.95rem;color:var(--ink);font-weight:500">${esc(d.name_hindi)}</div>` : ''}
+        <h4 style="font-style:italic;font-weight:500;color:var(--ink-2)">${esc(d.name)}</h4>
+        <div class="diff-icd">ICD ${esc(d.icd_code||'—')}${d.who_imci_category ? ` · ${esc(d.who_imci_category)}` : ''} · <span class="urgency-pill urg-${dUrg}" style="font-size:.6rem">${urgLabel(dUrg)}</span></div>
+        <div class="diff-findings">
+          ${sf ? `<div style="margin-top:8px;font-size:.75rem;font-weight:600;color:var(--ink-3)">Supporting</div>${sf}` : ''}
+          ${af ? `<div style="margin-top:6px;font-size:.75rem;font-weight:600;color:var(--ink-3)">Against</div>${af}` : ''}
+          ${(d.treatment_hindi || d.treatment) ? `<div style="margin-top:8px;font-size:.75rem;font-weight:600;color:var(--ink-3)">Treatment</div>
+            ${d.treatment_hindi ? `<div style="font-family:'Noto Sans Devanagari',sans-serif;font-size:.82rem">${esc(d.treatment_hindi)}</div>` : ''}
+            ${d.treatment ? `<div style="font-size:.78rem;color:var(--ink-2);font-style:italic;margin-top:2px">${esc(d.treatment)}</div>` : ''}` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const medsHTML = meds.map(m => `<div class="med-card">
+    <div class="med-icon">💊</div>
+    <div>
+      ${m.generic_name_hindi ? `<div class="med-hindi" style="font-size:.95rem;font-weight:600;color:var(--ink)">${esc(m.generic_name_hindi)}</div>` : ''}
+      <div class="med-name">${esc(m.generic_name)} ${m.in_nhm_formulary ? '<span class="nhm-tag">NHM</span>' : ''}</div>
+      ${m.dose_hindi ? `<div class="med-dose hindi" style="font-size:.85rem;color:var(--ink);margin-top:4px">${esc(m.dose_hindi)}</div>` : ''}
+      <div class="med-dose" style="font-style:italic;opacity:.85">${esc(m.dose)} · ${esc(m.frequency)} · ${esc(m.duration)} · ${esc(m.route)}</div>
+      ${m.warning ? `<div class="med-dose" style="color:var(--amber)">⚠️ ${esc(m.warning)}</div>` : ''}
+    </div>
+  </div>`).join('');
+
+  const fuHTML = (a.followup_hindi || a.followup) ? `<div class="card-sm" style="background:var(--info-l);border-color:var(--info)">
+    <div class="bold" style="font-size:.75rem;color:var(--info);margin-bottom:6px">📅 FOLLOW-UP ADVICE</div>
+    ${a.followup_hindi ? `<div class="hindi" style="font-size:.9rem">${esc(a.followup_hindi)}</div>` : ''}
+    ${a.followup ? `<div style="font-size:.82rem;color:var(--ink-2);font-style:italic;margin-top:4px">${esc(a.followup)}</div>` : ''}
+  </div>` : '';
+
+  const soapHTML = a.soap_note ? `<details style="margin-top:16px">
+    <summary style="cursor:pointer;font-weight:600;font-size:.85rem;color:var(--ink-3)">📄 Clinical note (SOAP)</summary>
+    <div class="soap-note" style="margin-top:10px">${esc(a.soap_note)}</div>
+  </details>` : '';
+
+  return `${banner}${summary}${refHTML}
+    <div class="section-title">🔬 Differential Diagnosis <span style="font-size:.75rem;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--ink-3)">(click to expand)</span></div>
+    ${diffsHTML || '<div class="text-sm text-muted">No differentials</div>'}
+    ${meds.length ? `<div class="section-title">💊 Medications</div>${medsHTML}` : ''}
+    ${fuHTML}${soapHTML}`;
+}
+
+async function loadHistory() {
+  const q = document.getElementById('hist-search')?.value || '';
+  const urg = document.getElementById('hist-urgency')?.value || '';
+  try {
+    let items = await api('/api/assessments?limit=100');
+    if (q) items = items.filter(a =>
+      (a.patient_name||'').toLowerCase().includes(q.toLowerCase()) ||
+      (a.village||'').toLowerCase().includes(q.toLowerCase()));
+    if (urg) items = items.filter(a => a.overall_urgency === urg);
+    const el = document.getElementById('history-list');
+    if (!items.length) { el.innerHTML = '<div class="empty-state"><div class="icon">📋</div>No records found</div>'; return; }
+    el.innerHTML = items.map(a => {
+      const u = a.overall_urgency || 'observation';
+      const top = a.differentials?.[0];
+      const dxHi = top?.name_hindi || '';
+      const dxEn = top?.name || '—';
+      return `<div class="hist-row urg-${u}" onclick="showAssessment('${a.id}')">
+        <div class="avatar urg-${u}" style="background:var(--ub);color:var(--uc);width:38px;height:38px;font-size:.95rem">${(a.patient_name||'?')[0].toUpperCase()}</div>
+        <div>
+          <div class="bold">${esc(a.patient_name||'Unknown')}</div>
+          <div class="text-sm">${fmtAge(a.age_months)} · ${a.sex||'?'} · ${esc(a.village||'—')}</div>
+          ${dxHi ? `<div class="hindi" style="font-size:.82rem;color:var(--ink-2)">${esc(dxHi)}</div>` : ''}
+          <div class="text-sm" style="color:var(--ink-2);font-style:italic">${esc(dxEn)}</div>
+        </div>
+        <div class="urgency-pill urg-${u}">${urgLabel(u)}</div>
+        <div class="text-sm">${fmtTime(a.created_at)}</div>
+      </div>`;
+    }).join('');
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function loadPatients() {
+  const q = document.getElementById('pt-search')?.value || '';
+  try {
+    const items = await api(`/api/patients?q=${encodeURIComponent(q)}`);
+    const el = document.getElementById('patients-list');
+    if (!items.length) { el.innerHTML = '<div class="empty-state"><div class="icon">👥</div>No patients</div>'; return; }
+    el.innerHTML = items.map(p => `<div class="hist-row" onclick="showPatient('${p.id}')">
+      <div class="avatar" style="background:var(--teal-l);color:var(--teal-d)">${(p.name||'?')[0].toUpperCase()}</div>
+      <div>
+        <div class="bold">${esc(p.name)}</div>
+        <div class="text-sm">${fmtAge(p.age_months)} · ${p.sex||'?'} · ${esc(p.village||'—')}</div>
+      </div>
+      <div class="text-sm">${fmtTime(p.created_at)}</div>
+    </div>`).join('');
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function showAssessment(id) {
+  try {
+    const a = await api(`/api/assessments/${id}`);
+    document.getElementById('detail-content').innerHTML = buildResultHTML(a);
+    document.getElementById('detail-modal').style.display = 'block';
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function showPatient(id) {
+  try {
+    const data = await api(`/api/patients/${id}`);
+    const p = data.patient;
+    const assessments = data.assessments || [];
+    document.getElementById('detail-content').innerHTML = `
+      <h2 style="margin-bottom:4px">${esc(p.name)}</h2>
+      <div class="text-sm" style="margin-bottom:20px">${fmtAge(p.age_months)} · ${p.sex||'?'} · ${esc(p.village||'—')}</div>
+      <div class="section-title">${assessments.length} Assessments</div>
+      ${assessments.map(a => {
+        const u = a.overall_urgency||'observation';
+        return `<div class="hist-row urg-${u}" onclick="closeModal();showAssessment('${a.id}')">
+          <div class="avatar urg-${u}" style="background:var(--ub);color:var(--uc)">${(p.name||'?')[0].toUpperCase()}</div>
+          <div>
+            <div class="bold">${esc(a.differentials?.[0]?.name || 'Assessment')}</div>
+            <div class="text-sm">${fmtTime(a.created_at)}</div>
+          </div>
+          <div class="urgency-pill urg-${u}">${urgLabel(u)}</div>
+        </div>`;
+      }).join('') || '<div class="text-sm text-muted">No assessments yet</div>'}`;
+    document.getElementById('detail-modal').style.display = 'block';
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+function closeModal() { document.getElementById('detail-modal').style.display = 'none'; }
+document.getElementById('detail-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('detail-modal')) closeModal();
+});
+
+async function api(url, opts = {}) {
+  const config = { headers: { 'Content-Type': 'application/json' }, ...opts };
+  if (opts.body && typeof opts.body === 'object') config.body = JSON.stringify(opts.body);
+  const res = await fetch(url, config);
+  if (!res.ok) {
+    let msg = `HTTP ${res.status}`;
+    try { const d = await res.json(); msg = d.detail || msg; } catch(_) {}
+    throw new Error(msg);
+  }
+  return res.json();
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtAge(months) {
+  if (!months && months !== 0) return '—';
+  const yr = Math.floor(months / 12), mo = months % 12;
+  if (yr === 0) return `${mo} mo`;
+  if (mo === 0) return `${yr} yr`;
+  return `${yr} yr ${mo} mo`;
+}
+
+function fmtTime(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso + (iso.includes('Z') ? '' : 'Z'));
+  const diff = Math.floor((new Date() - d) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  return d.toLocaleDateString('en-IN', { day:'numeric', month:'short' });
+}
+
+function urgLabel(u) {
+  return { high:'REFER NOW', medium:'REFER TODAY', low:'TREAT & MONITOR', observation:'OBSERVE' }[u] || (u||'').toUpperCase();
+}
+
+function toast(msg, type = '') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `${type === 'success' ? '✓' : type === 'error' ? '⚠' : 'ℹ'} ${esc(msg)}`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadDashboard();
+  const updateConn = () => {
+    const online = navigator.onLine;
+    document.getElementById('conn-label').textContent = online ? 'Online' : 'Offline';
+    document.querySelector('.offline-dot').style.background = online ? 'var(--teal)' : 'var(--amber)';
+  };
+  updateConn();
+  window.addEventListener('online', updateConn);
+  window.addEventListener('offline', updateConn);
+});
+</script>
+</body>
+</html>
