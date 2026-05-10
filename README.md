@@ -169,9 +169,7 @@ mediedge/
 │
 ├── docs/
 │   ├── KAGGLE_WRITEUP.md        # Hackathon writeup (~1,290 words)
-│   ├── ARCHITECTURE.md          # Engineering deep-dive
-│   ├── DEPLOY.md                # Pilot/centre deployment guide
-│   └── GITHUB.md                # Repo upload guide
+│   └── ARCHITECTURE.md          # Engineering deep-dive 
 │
 ├── tests/
 │   └── test_smoke.py            # 11 API smoke tests
